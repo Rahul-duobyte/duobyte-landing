@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Duobyte — Find your next collab partner</title>
+<meta name="description" content="The matchmaking app for content creators. Swipe, match, and collab with creators in your niche. Free for your first year." />
+<meta property="og:title" content="Duobyte — Find your next collab partner" />
+<meta property="og:description" content="Matchmaking for content creators. Verified profiles. Real collabs. First 500 creators get a year free." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f1ea;
+    --paper-warm: #ede5d7;
+    --accent: #ff5a36;
+    --accent-soft: #ffd4c8;
+    --muted: #6b5d4f;
+    --line: #d8cdb8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.78em; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 100;
+    mix-blend-mode: multiply;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    padding: 24px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 50;
+    background: linear-gradient(to bottom, var(--paper) 50%, transparent);
+  }
+  .logo {
+    font-weight: 800; font-size: 26px;
+    letter-spacing: -0.03em;
+    font-style: italic;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-style: normal;
+    font-size: 18px;
+    font-weight: 800;
+    transform: rotate(-4deg);
+  }
+  .logo-mark span { color: var(--accent); }
+  nav a.cta-nav {
+    background: var(--ink); color: var(--paper);
+    padding: 10px 20px; border-radius: 999px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    transition: transform 0.2s;
+  }
+  nav a.cta-nav:hover { transform: translateY(-2px); }
+
+  .hero {
+    min-height: 100vh;
+    padding: 140px 40px 80px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .hero-left h1 {
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+    margin-bottom: 32px;
+  }
+  .hero-left h1 .italic { font-style: italic; font-weight: 400; }
+  .hero-left h1 .underline {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 6px;
+    text-underline-offset: 8px;
+  }
+  .hero-left .lede {
+    font-size: 22px;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 40px;
+    line-height: 1.4;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-soft);
+    color: var(--ink);
+    padding: 8px 16px; border-radius: 999px;
+    margin-bottom: 32px;
+    border: 1px solid var(--accent);
+  }
+  .badge .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero-right {
+    position: relative;
+    height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    position: absolute;
+    width: 280px; height: 380px;
+    border-radius: 24px;
+    background: var(--paper-warm);
+    border: 2px solid var(--ink);
+    padding: 24px;
+    box-shadow: 8px 8px 0 var(--ink);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .card-1 { transform: rotate(-8deg) translateX(-60px); background: #fff; }
+  .card-2 { transform: rotate(4deg) translateX(20px); background: var(--accent-soft); z-index: 2; }
+  .card-3 { transform: rotate(-2deg) translateX(80px); background: #e8e0d0; z-index: 1; }
+  .card .avatar {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .card-1 .avatar { background: var(--accent); }
+  .card-3 .avatar { background: #4a3f33; }
+  .card .name { font-weight: 800; font-size: 22px; margin-bottom: 4px; }
+  .card .handle { color: var(--muted); margin-bottom: 12px; font-size: 14px; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--ink); color: var(--paper);
+    text-transform: uppercase;
+  }
+  .card .stats {
+    display: flex; justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px dashed var(--ink);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+  .card .stats strong { font-size: 20px; font-family: 'Fraunces', serif; display: block; }
+  .swipe-icons {
+    position: absolute; bottom: -40px;
+    left: 50%; transform: translateX(-50%);
+    display: flex; gap: 24px;
+    z-index: 5;
+  }
+  .swipe-btn {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 800;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .swipe-btn.no { color: #888; }
+  .swipe-btn.yes { background: var(--accent); color: white; }
+
+  .signup-form {
+    display: flex; gap: 8px;
+    max-width: 480px;
+    background: white;
+    padding: 6px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .signup-form input {
+    flex: 1;
+    border: none; outline: none;
+    padding: 14px 20px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    background: transparent;
+    color: var(--ink);
+  }
+  .signup-form button {
+    background: var(--ink); color: var(--paper);
+    border: none; cursor: pointer;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .signup-form button:hover { background: var(--accent); }
+  .signup-form button:disabled { opacity: 0.6; cursor: not-allowed; }
+  .form-note {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  section { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+  .section-title em { font-style: italic; font-weight: 400; color: var(--accent); }
+
+  .problem {
+    background: var(--ink);
+    color: var(--paper);
+    max-width: none;
+    margin: 0;
+    padding: 100px 40px;
+    position: relative;
+  }
+  .problem-inner { max-width: 1200px; margin: 0 auto; }
+  .problem .section-label { color: var(--accent); }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+  }
+  .problem-item h3 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .problem-item h3 .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .problem-item p { color: #b8aa97; font-size: 18px; line-height: 1.5; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 60px;
+  }
+  .step {
+    background: white;
+    border: 2px solid var(--ink);
+    padding: 32px;
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .step-num {
+    position: absolute;
+    top: -20px; left: 24px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px;
+    border: 2px solid var(--ink);
+  }
+  .step h3 {
+    font-size: 26px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  .step p { color: var(--muted); }
+
+  .pricing-box {
+    background: var(--accent);
+    color: white;
+    padding: 60px;
+    border-radius: 32px;
+    margin-top: 40px;
+    border: 3px solid var(--ink);
+    box-shadow: 12px 12px 0 var(--ink);
+    text-align: center;
+  }
+  .pricing-box .big {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .pricing-box .big em { font-style: italic; font-weight: 400; }
+  .pricing-box .sub { font-size: 20px; opacity: 0.95; max-width: 600px; margin: 0 auto 32px; }
+
+  .final-cta {
+    text-align: center;
+    padding: 120px 40px;
+    background: var(--paper-warm);
+    margin: 0;
+    max-width: none;
+  }
+  .final-cta-inner { max-width: 700px; margin: 0 auto; }
+  .final-cta h2 {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 800;
+    margin-bottom: 24px;
+  }
+  .final-cta h2 em { font-style: italic; }
+  .final-cta .signup-form { margin: 32px auto 0; }
+
+  footer {
+    padding: 40px;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--line);
+  }
+  footer .logo-foot { color: var(--ink); font-family: 'Fraunces', serif; font-size: 18px; font-style: italic; font-weight: 800; }
+  footer a { color: var(--muted); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--ink); }
+
+  .success-message {
+    display: none;
+    background: #2d5a3d;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    margin-top: 16px;
+  }
+  .success-message.show { display: inline-block; }
+  .error-message {
+    display: none;
+    background: #b34239;
+    color: white;
+    padding: 14px 24px;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    margin-top: 16px;
+  }
+  .error-message.show { display: inline-block; }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 20px; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 100px 20px 60px;
+      gap: 40px;
+    }
+    .hero-right { height: 440px; }
+    section { padding: 60px 20px; }
+    .problem { padding: 60px 20px; }
+    .problem-grid { grid-template-columns: 1fr; gap: 32px; }
+    .steps { grid-template-columns: 1fr; }
+    .pricing-box { padding: 32px 24px; }
+    .final-cta { padding: 60px 20px; }
+    .signup-form { flex-direction: column; border-radius: 24px; padding: 12px; gap: 12px; }
+    .signup-form input { text-align: center; padding: 12px; }
+    .signup-form button { padding: 14px; }
+  }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.25s; }
+  .delay-3 { animation-delay: 0.4s; }
+  .delay-4 { animation-delay: 0.55s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <span class="logo-mark">D<span>·</span></span>
+    duobyte
+  </div>
+  <a href="#join" class="cta-nav">Join the waitlist</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="badge fade-up delay-1">
+      <span class="dot"></span>
+      <span class="mono">Launching in Delhi · Mumbai · Bangalore</span>
+    </div>
+    <h1 class="fade-up delay-2">
+      Find your next <span class="italic underline">collab</span> partner. Not your next 10,000 DMs.
+    </h1>
+    <p class="lede fade-up delay-3">
+      Duobyte is where small creators meet other small creators to collaborate, grow, and turn each other into audiences. Built for finance & education creators first.
+    </p>
+    <form class="signup-form fade-up delay-4" id="waitlist-form" action="https://formspree.io/f/xykoaapd" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="hidden" name="source" value="hero" />
+      <button type="submit">Join waitlist</button>
+    </form>
+    <div class="success-message" id="success-hero">✓ You're on the list. We'll be in touch.</div>
+    <div class="error-message" id="error-hero">Something went wrong. Try again.</div>
+    <p class="form-note fade-up delay-4">Free for your first year · No spam · Cancel anytime</p>
+  </div>
+
+  <div class="hero-right">
+    <div class="card card-1">
+      <div>
+        <div class="avatar">P</div>
+        <div class="name">Priya M.</div>
+        <div class="handle">@priyalearnsfinance</div>
+        <div class="tags">
+          <span class="tag">Finance</span>
+          <span class="tag">Reels</span>
+          <span class="tag">Hindi</span>
+        </div>
+      </div>
+      <div class="stats">
+        <div><strong>3.2k</strong>Followers</div>
+        <div><strong>Mumbai</strong>City</div>
+      </div>
+    </div>
+    <div class="card card-2">
+      <div>
+        <div class="avatar">A</div>
+        <div class="name">Arjun K.</div>
+        <div class="handle">@arjunteaches</div>
+        <div class="tags">
+          <span class="tag">EdTech</span>
+          <span class="tag">Podcast</span>
+          <span class="tag">English</span>
+        </div>
+      </div>
+      <div class="stats">
+        <div><strong>1.8k</strong>Followers</div>
+        <div><strong>Delhi</strong>City</div>
+      </div>
+    </div>
+    <div class="card card-3">
+      <div>
+        <div class="avatar">R</div>
+        <div class="name">Riya S.</div>
+        <div class="handle">@riyaonmoney</div>
+        <div class="tags">
+          <span class="tag">Finance</span>
+          <span class="tag">Reels</span>
+        </div>
+      </div>
+      <div class="stats">
+        <div><strong>4.5k</strong>Followers</div>
+        <div><strong>BLR</strong>City</div>
+      </div>
+    </div>
+    <div class="swipe-icons">
+      <div class="swipe-btn no">✕</div>
+      <div class="swipe-btn yes">♡</div>
+    </div>
+  </div>
+</section>
+
+<div class="problem">
+  <div class="problem-inner">
+    <div class="section-label">The problem</div>
+    <h2 class="section-title">Small creators get<br><em>ignored. </em>By everyone.</h2>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <h3><span class="num">01</span>Brands won't reach out.</h3>
+        <p>Below 10k followers, agencies don't know you exist. You're invisible to the people writing the cheques.</p>
+      </div>
+      <div class="problem-item">
+        <h3><span class="num">02</span>Cold DMs go nowhere.</h3>
+        <p>You message bigger creators hoping for a collab. They never reply. Your message sits in "Requests" forever.</p>
+      </div>
+      <div class="problem-item">
+        <h3><span class="num">03</span>The algorithm rewards collabs.</h3>
+        <p>Cross-posting and shared Reels are the fastest way to grow on Instagram in 2026. But only if you can find a partner.</p>
+      </div>
+      <div class="problem-item">
+        <h3><span class="num">04</span>You don't know who's actually real.</h3>
+        <p>Half the "creators" you see have bought followers. You waste time on collabs that go nowhere.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">Three steps. <em>That's the app.</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Verify your Instagram</h3>
+      <p>Connect your account. We confirm your follower count and niche so everyone on Duobyte is real.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Swipe through creators</h3>
+      <p>See profiles of creators in your niche, your size, your city. Right-swipe if you'd collab. Left if not.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Match. Chat. Collab.</h3>
+      <p>When you both swipe right, the chat unlocks. Plan a Reel, a podcast, a takeover — whatever fits.</p>
+    </div>
+  </div>
+</section>
+
+<section id="join">
+  <div class="section-label">Founding member access</div>
+  <h2 class="section-title">First year on us. <em>Always.</em></h2>
+  <div class="pricing-box">
+    <div class="big">Free for <em>365 days</em></div>
+    <p class="sub">Every creator who joins now gets one full year free, starting the day you sign up. After that, ₹199/month — only if you've found it useful.</p>
+    <form class="signup-form" id="waitlist-form-2" action="https://formspree.io/f/xykoaapd" method="POST" style="background: white; color: var(--ink);">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="hidden" name="source" value="pricing" />
+      <button type="submit">Claim my year</button>
+    </form>
+    <div class="success-message" id="success-pricing" style="margin: 16px auto 0; background: var(--ink);">✓ You're on the list. We'll be in touch.</div>
+  </div>
+</section>
+
+<div class="final-cta">
+  <div class="final-cta-inner">
+    <h2>Stop DM-ing.<br><em>Start collab-ing.</em></h2>
+    <p class="lede" style="color: var(--muted); margin: 24px auto 0;">We're inviting the first 500 creators in. Drop your email and your Instagram handle to skip the line.</p>
+    <form class="signup-form" id="waitlist-form-3" action="https://formspree.io/f/xykoaapd" method="POST">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="hidden" name="source" value="final" />
+      <button type="submit">I'm in</button>
+    </form>
+    <div class="success-message" id="success-final" style="margin: 16px auto 0;">✓ You're on the list. We'll be in touch.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo-foot">duobyte</div>
+  <p style="margin-top: 12px;">
+    <a href="mailto:rahul@duobyte.app">rahul@duobyte.app</a> ·
+    <a href="https://instagram.com/duobyte.app" target="_blank">Instagram</a>
+  </p>
+  <p style="margin-top: 12px;">Built for creators. Made in India. © 2026 Duobyte</p>
+</footer>
+
+<script>
+  function handleForm(formId, successId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const button = form.querySelector('button');
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Sending...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.reset();
+          const success = document.getElementById(successId);
+          if (success) {
+            success.classList.add('show');
+            setTimeout(() => success.classList.remove('show'), 5000);
+          }
+        } else {
+          alert("Something went wrong. Try again or email rahul@duobyte.app");
+        }
+      } catch (err) {
+        alert("Network error. Please check your connection.");
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
+      }
+    });
+  }
+  handleForm('waitlist-form', 'success-hero');
+  handleForm('waitlist-form-2', 'success-pricing');
+  handleForm('waitlist-form-3', 'success-final');
+</script>
+
+</body>
+</html>
