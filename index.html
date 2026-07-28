@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Duobyte — Find your next collab partner</title>
-<meta name="description" content="The matchmaking app for content creators. Swipe, match, and collab with creators in your niche. Free for your first year." />
-<meta property="og:title" content="Duobyte — Find your next collab partner" />
-<meta property="og:description" content="Matchmaking for content creators. Verified profiles. Real collabs. First 500 creators get a year free." />
+<title>Collabaroo — Find your next collab partner</title>
+<meta name="description" content="The matchmaking app for content creators. Swipe, match, and collab with creators in your niche." />
+<meta property="og:title" content="Collabaroo — Find your next collab partner" />
+<meta property="og:description" content="Matchmaking for content creators. Verified profiles. Real collabs." />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -195,11 +195,11 @@
   .swipe-btn.yes { background: var(--accent); color: white; }
 
   .signup-form {
-    display: flex; gap: 8px;
+    display: flex; flex-direction: column; gap: 12px;
     max-width: 480px;
     background: white;
-    padding: 6px;
-    border-radius: 999px;
+    padding: 12px;
+    border-radius: 24px;
     border: 2px solid var(--ink);
     box-shadow: 6px 6px 0 var(--ink);
   }
@@ -388,6 +388,20 @@
   }
   .error-message.show { display: inline-block; }
 
+  .play-btn {
+    display: none;
+    margin-top: 16px;
+    background: var(--ink); color: var(--paper);
+    padding: 14px 24px; border-radius: 999px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  .play-btn.show { display: inline-block; }
+  .play-btn:hover { background: var(--accent); }
+
   @media (max-width: 900px) {
     nav { padding: 16px 20px; }
     .hero {
@@ -425,8 +439,8 @@
 
 <nav>
   <div class="logo">
-    <span class="logo-mark">D<span>·</span></span>
-    duobyte
+    <span class="logo-mark">C<span>·</span></span>
+    Collabaroo
   </div>
   <a href="#join" class="cta-nav">Join the waitlist</a>
 </nav>
@@ -435,22 +449,26 @@
   <div class="hero-left">
     <div class="badge fade-up delay-1">
       <span class="dot"></span>
-      <span class="mono">Launching in Delhi · Mumbai · Bangalore</span>
+      <span class="mono">Launching 26 August · Built for creators worldwide</span>
     </div>
     <h1 class="fade-up delay-2">
       Find your next <span class="italic underline">collab</span> partner. Not your next 10,000 DMs.
     </h1>
     <p class="lede fade-up delay-3">
-      Duobyte is where small creators meet other small creators to collaborate, grow, and turn each other into audiences. Built for finance & education creators first.
+      Collabaroo is where small creators meet other small creators to collaborate, grow, and turn each other into audiences. For creators everywhere — every niche, every language, every platform.
     </p>
     <form class="signup-form fade-up delay-4" id="waitlist-form" action="https://formspree.io/f/xykoaapd" method="POST">
+      <input type="text" name="name" placeholder="Your name" required />
       <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="text" name="instagram" placeholder="Instagram handle" required />
+      <input type="tel" name="whatsapp" placeholder="WhatsApp number" inputmode="numeric" required />
       <input type="hidden" name="source" value="hero" />
-      <button type="submit">Join waitlist</button>
+      <button type="submit">Join the waitlist</button>
     </form>
     <div class="success-message" id="success-hero">✓ You're on the list. We'll be in touch.</div>
     <div class="error-message" id="error-hero">Something went wrong. Try again.</div>
-    <p class="form-note fade-up delay-4">Free for your first year · No spam · Cancel anytime</p>
+    <a class="play-btn" href="https://play.google.com/store/apps/details?id=app.collabaroo.app" target="_blank" rel="noopener">Pre-register on Google Play</a>
+    <p class="form-note fade-up delay-4">No spam · Cancel anytime</p>
   </div>
 
   <div class="hero-right">
@@ -540,7 +558,7 @@
     <div class="step">
       <div class="step-num">1</div>
       <h3>Verify your Instagram</h3>
-      <p>Connect your account. We confirm your follower count and niche so everyone on Duobyte is real.</p>
+      <p>Connect your account. We confirm your follower count and niche so everyone on Collabaroo is real.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
@@ -557,16 +575,19 @@
 
 <section id="join">
   <div class="section-label">Founding member access</div>
-  <h2 class="section-title">First year on us. <em>Always.</em></h2>
+  <h2 class="section-title">Founding <em>Creator</em></h2>
   <div class="pricing-box">
-    <div class="big">Free for <em>365 days</em></div>
-    <p class="sub">Every creator who joins now gets one full year free, starting the day you sign up. After that, ₹199/month — only if you've found it useful.</p>
+    <p class="sub">Join before launch and get the Founding Creator badge, bonus tokens, and first access to brand collabs when we go live on 26 August.</p>
     <form class="signup-form" id="waitlist-form-2" action="https://formspree.io/f/xykoaapd" method="POST" style="background: white; color: var(--ink);">
+      <input type="text" name="name" placeholder="Your name" required />
       <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="text" name="instagram" placeholder="Instagram handle" required />
+      <input type="tel" name="whatsapp" placeholder="WhatsApp number" inputmode="numeric" required />
       <input type="hidden" name="source" value="pricing" />
-      <button type="submit">Claim my year</button>
+      <button type="submit">Join the waitlist</button>
     </form>
     <div class="success-message" id="success-pricing" style="margin: 16px auto 0; background: var(--ink);">✓ You're on the list. We'll be in touch.</div>
+    <a class="play-btn" href="https://play.google.com/store/apps/details?id=app.collabaroo.app" target="_blank" rel="noopener">Pre-register on Google Play</a>
   </div>
 </section>
 
@@ -575,21 +596,25 @@
     <h2>Stop DM-ing.<br><em>Start collab-ing.</em></h2>
     <p class="lede" style="color: var(--muted); margin: 24px auto 0;">We're inviting the first 500 creators in. Drop your email and your Instagram handle to skip the line.</p>
     <form class="signup-form" id="waitlist-form-3" action="https://formspree.io/f/xykoaapd" method="POST">
+      <input type="text" name="name" placeholder="Your name" required />
       <input type="email" name="email" placeholder="your@email.com" required />
+      <input type="text" name="instagram" placeholder="Instagram handle" required />
+      <input type="tel" name="whatsapp" placeholder="WhatsApp number" inputmode="numeric" required />
       <input type="hidden" name="source" value="final" />
-      <button type="submit">I'm in</button>
+      <button type="submit">Join the waitlist</button>
     </form>
     <div class="success-message" id="success-final" style="margin: 16px auto 0;">✓ You're on the list. We'll be in touch.</div>
+    <a class="play-btn" href="https://play.google.com/store/apps/details?id=app.collabaroo.app" target="_blank" rel="noopener">Pre-register on Google Play</a>
   </div>
 </div>
 
 <footer>
-  <div class="logo-foot">duobyte</div>
+  <div class="logo-foot">Collabaroo</div>
   <p style="margin-top: 12px;">
-    <a href="mailto:rahul@duobyte.app">rahul@duobyte.app</a> ·
-    <a href="https://instagram.com/duobyte.app" target="_blank">Instagram</a>
+    <a href="mailto:rahul@collabaroo.app">rahul@collabaroo.app</a> ·
+    <a href="https://instagram.com/collabaroo" target="_blank">Instagram</a>
   </p>
-  <p style="margin-top: 12px;">Built for creators. Made in India. © 2026 Duobyte</p>
+  <p style="margin-top: 12px;">Built for creators. Made in India. © 2026 Collabaroo</p>
 </footer>
 
 <script>
@@ -604,6 +629,7 @@
       button.textContent = 'Sending...';
 
       try {
+        // Save the signup first...
         const response = await fetch(form.action, {
           method: 'POST',
           body: new FormData(form),
@@ -611,20 +637,22 @@
         });
 
         if (response.ok) {
-          form.reset();
+          // ...then show the success state in place. No redirect — the
+          // Google Play handoff only happens if the user taps that button.
           const success = document.getElementById(successId);
-          if (success) {
-            success.classList.add('show');
-            setTimeout(() => success.classList.remove('show'), 5000);
-          }
+          form.style.display = 'none';
+          if (success) success.classList.add('show');
+          const playBtn = form.parentElement.querySelector('.play-btn');
+          if (playBtn) playBtn.classList.add('show');
         } else {
-          alert("Something went wrong. Try again or email rahul@duobyte.app");
+          button.disabled = false;
+          button.textContent = originalText;
+          alert("Something went wrong. Try again or email rahul@collabaroo.app");
         }
       } catch (err) {
-        alert("Network error. Please check your connection.");
-      } finally {
         button.disabled = false;
         button.textContent = originalText;
+        alert("Network error. Please check your connection.");
       }
     });
   }
