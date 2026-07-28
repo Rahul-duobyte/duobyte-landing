@@ -469,7 +469,7 @@
     <p class="lede fade-up delay-3">
       Collabaroo is where creators meet other creators to collaborate, grow, and turn each other into audiences. For creators everywhere — every niche, every language, every platform.
     </p>
-    <form class="signup-form fade-up delay-4" id="waitlist-form" action="https://formspree.io/f/xykoaapd" method="POST">
+    <form class="signup-form fade-up delay-4" id="waitlist-form" action="/api/waitlist" method="POST">
       <input type="text" name="name" placeholder="Your name" required />
       <input type="email" name="email" placeholder="your@email.com" required />
       <input type="text" name="instagram" placeholder="Instagram handle" required />
@@ -615,11 +615,12 @@
       button.textContent = 'Sending...';
 
       try {
-        // Save the signup first...
+        // Save the signup first, via our own serverless function (not Formspree).
+        const payload = Object.fromEntries(new FormData(form).entries());
         const response = await fetch(form.action, {
           method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
         });
 
         if (response.ok) {
@@ -645,3 +646,5 @@
   handleForm('waitlist-form', 'success-hero');
 </script>
 
+</body>
+</html>
