@@ -447,6 +447,7 @@
   .delay-3 { animation-delay: 0.4s; }
   .delay-4 { animation-delay: 0.55s; }
 </style>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -624,6 +625,8 @@
         });
 
         if (response.ok) {
+          // Tell Vercel Web Analytics a waitlist signup happened (conversion event).
+          if (window.va) window.va('event', { name: 'waitlist_signup' });
           // ...then show the success state in place. No redirect — the
           // Google Play handoff only happens if the user taps that button.
           const success = document.getElementById(successId);
